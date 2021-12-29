@@ -1,0 +1,124 @@
+В задании: 9, 10 и 11 не смог подобрать нужной команды, перепроовал кучи вариантов, но не получилось.
+К сожалению времени совсем мало и я физически не успеваю продумать до конца как мне справится с заданиями 9, 10, и 11.
+Принцип понимаю и все делаю как описано в юните, читал, искал, пробовал, но увы...... Очень обидно, т.к. старался и стараюсь учиться на отлично.
+С сожалением понимаю, что статистика подпорчена, а самое главное, что не нашел решения..... Чувствую, что был совсем близко и наверняка тупо где-то не так
+писал синтаксис, где-то праям вертелось в голове правильное решение. Но опять же скажу, что перепробовал, на мой взгляд, всё.
+Уверен, что результат был вот-вот, но время истекло. Поэтому отсылаю всё как есть....
+Сердечно прошу вас в комментариях к проделанной работе написать решения мною не доделанных заданий, т.к. я спать не буду преребирая все возможные варианты.
+Очень хочется узнать ответ, чтобы в будущем быть уверенным в своих силах.
+Не судите строго)
+
+1.Создаем пользователей:
+
+u1 = User.objects.create_user(username='Шава', first_name='Андрей', last_name='Аршавин')
+u2 = User.objects.create_user(username='Финансовый аналитик', first_name='Валентин', last_name='Катасонов')
+u3 = User.objects.create_user(username='Метеоролог', first_name='Александр', last_name='Рыбин')
+
+
+2.Создаем объекты модели Author, связанные с пользователями.
+
+Author.objects.create(authorUser=u1)
+Author.objects.create(authorUser=u2)
+Author.objects.create(authorUser=u3)
+
+3.Категории
+
+Category.objects.create(name='Спорт')
+Category.objects.create(name='Политика')
+Category.objects.create(name='Наука')
+Category.objects.create(name='Финансы')
+Category.objects.create(name='Погода')
+
+
+4.Две статьи и один пост
+
+author=Author.objects.get(id=1)
+Post.objects.create(author=author, categoryType='NW', title='заголовок', text='какой-то текст')
+author=Author.objects.get(id=2)
+Post.objects.create(author=author, categoryType='AR', title='заголовок', text='какой-то текст')
+author=Author.objects.get(id=3)
+Post.objects.create(author=author, categoryType='AR', title='заголовок', text='какой-то текст')
+
+
+5.Присваиваем категории к новостям
+
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1))
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=4))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=4))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=3))
+
+
+6.Создаём комментарии
+
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=1).authorUser, text='anytextbyauthor')
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text='anytextbyauthor5')
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=3).authorUser, text='anytextbyauthor1')
+Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=2).authorUser, text='anytextbyauthor2')
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=3).authorUser, text='anytextbyauthor11')
+
+
+7.Like, Dislike
+
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=1).like()
+проверяем.
+Comment.objects.get(id=1).rating
+(2)
+Comment.objects.get(id=2).like()
+проверяем.
+Comment.objects.get(id=2).rating
+(1)
+Dislike.
+Comment.objects.get(id=1).dislike()
+проверяем.
+Comment.objects.get(id=1).rating
+(1)
+Comment.objects.get(id=1).like()
+
+также с постами
+
+Post.objects.get(id=1).like()
+Post.objects.get(id=2).like()
+
+и т.д.
+
+
+8.Обновляем рейтинг
+
+Author.objects.get(id=1)
+a = Author.objects.get(id=1)
+a.update_rating()
+a.ratingAuthor
+
+Author.objects.get(id=2)
+b = Author.objects.get(id=2)
+b.update_rating()
+b.ratingAuthor
+
+Author.objects.get(id=3)
+c = Author.objects.get(id=3)
+c.update_rating()
+c.ratingAuthor
+
+9.Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
+
+Author.objects.order_by('-ratingAuthor')[0]
+
+Author.objects.order_by('-ratingAuthor').values('authorUser')[0]
+
+
+10.Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
+
+11.Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+
+
+
+Спасибо вам и с наступающим новым годом!
+
+
+
+
+
+
+
+
